@@ -16,10 +16,11 @@ def advent_calendar_func(df):
     return pivot,df
 def to_excel(pivot,df):
     output = BytesIO()
-    workbook = xlsxwriter.Workbook(output, {'in_memory': True})
-    df.to_excel(workbook,sheet_name='Details')
-    pivot.to_excel(workbook,sheet_name='Summary')
-    workbook.close()
+    #workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+    with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
+        df.to_excel(writer,sheet_name='Details')
+        pivot.to_excel(writer,sheet_name='Summary')
+        writer.save()
     return output
 
 
@@ -57,10 +58,10 @@ with tab2:
             tab2.write(pivot.reset_index())
             out=to_excel(pivot,df)
             tab2.download_button(
-            label="Download data as CSV",
-            data=out.get_value(),
-            file_name='large_df.xlsx',
-            mime='application/vnd.ms-excel',key='advent_calendar'
+                label="Download data as CSV",
+                data=out.get_value(),
+                file_name='large_df.xlsx',
+                mime='application/vnd.ms-excel',key='advent_calendar'
         )
         
     except Exception as e:
