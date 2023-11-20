@@ -59,7 +59,7 @@ with tab2:
             out=to_excel(pivot,df)
             tab2.download_button(
                 label="Download data as CSV",
-                data=out.get_value(),
+                data=out,
                 file_name='large_df.xlsx',
                 mime='application/vnd.ms-excel',key='advent_calendar'
         )
