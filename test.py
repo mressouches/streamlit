@@ -53,7 +53,7 @@ with tab2:
             df=pd.read_excel(uploaded_advent_file, sheet_name='Campaigns',skiprows=3,skipfooter=5)
             pivot,df=advent_calendar_func(df)
             tab2.write(df)
-            tab2.write(pivot),
+            tab2.write(pivot)
             out=to_excel(pivot,df)
             tab2.download_button(
             label="Download data as CSV",
