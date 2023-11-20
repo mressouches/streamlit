@@ -12,7 +12,7 @@ def advent_calendar_func(df):
     df=df.loc[:,~(df.columns.str.contains('Unnamed:'))]
     df=df[~(df.Module=='Totale')]
     pivot=df.pivot_table(index=['Campaign','User ID','User Name','User Surname'],columns='Module',values='Points',aggfunc='sum',margins=True,margins_name='Total').sort_values('Total',ascending=False).fillna(0)
-    pivot['User ID']=pivot['User ID'].astype(str)
+    #pivot['User ID']=pivot['User ID'].astype(str)
     return pivot,df
 def to_excel(pivot,df):
     output = BytesIO()
@@ -54,7 +54,7 @@ with tab2:
             df=pd.read_excel(uploaded_advent_file, sheet_name='Campaigns',skiprows=3,skipfooter=5)
             pivot,df=advent_calendar_func(df)
             tab2.write(df)
-            tab2.write(pivot)
+            tab2.write(pivot.reset_index())
             out=to_excel(pivot,df)
             tab2.download_button(
             label="Download data as CSV",
