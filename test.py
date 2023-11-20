@@ -28,10 +28,10 @@ with tab1:
     try:
         df=pd.read_excel(uploaded_file, sheet_name='Matrix')
     except Exception as e:
-        st.write(e)
+        tab1.write(e)
 
     df.columns=df.columns.str.strip()
-    st.write(df)
+    tab1.write(df)
     csv = convert_df(df)
 
     st.download_button(
@@ -47,10 +47,10 @@ with tab2:
     try:
         df=pd.read_excel(uploaded_advent_file, sheet_name='Campaigns',skiprows=3,skipfooter=5)
     except Exception as e:
-        st.write(e)
+        tab2.write(e)
     pivot,df=advent_calendar_func(df)
-    st.write(df)
-    st.write(pivot),
+    tab2.write(df)
+    tab2.write(pivot),
     out=to_excel(pivot,df)
 
 
