@@ -12,6 +12,7 @@ def advent_calendar_func(df):
     df=df.loc[:,~(df.columns.str.contains('Unnamed:'))]
     df=df[~(df.Module=='Totale')]
     pivot=df.pivot_table(index=['Campaign','User ID','User Name','User Surname'],columns='Module',values='Points',aggfunc='sum',margins=True,margins_name='Total').sort_values('Total',ascending=False).fillna(0)
+    pivot['User ID']=pivot['User ID'].astype(str)
     return pivot,df
 def to_excel(pivot,df):
     output = BytesIO()
