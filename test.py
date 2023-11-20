@@ -26,9 +26,9 @@ with tab1:
     )
 
 with tab2:
-    uploaded_file=st.file_uploader('Choose a file')
+    uploaded_advent_file=st.file_uploader('Choose a file')
     try:
-        df=pd.read_excel(uploaded_file, sheet_name='Campaigns',skiprows=3,skipfooter=5)
+        df=pd.read_excel(uploaded_advent_file, sheet_name='Campaigns',skiprows=3,skipfooter=5)
     except Exception as e:
         st.write(e)
 
