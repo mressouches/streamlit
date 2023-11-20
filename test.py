@@ -20,7 +20,7 @@ def to_excel(pivot,df):
     with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
         df.to_excel(writer,sheet_name='Details')
         pivot.to_excel(writer,sheet_name='Summary')
-        writer.save()
+        #writer.save()
     return output
 
 
