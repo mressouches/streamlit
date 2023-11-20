@@ -3,7 +3,7 @@ import pandas as pd
 import xlsxwriter
 from io import BytesIO
 
-st.write("test")
+st.write("Tools")
 def convert_df(df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
     return df.to_csv(index=False,encoding='utf-8').encode('utf-8')
@@ -11,6 +11,8 @@ def convert_df(df):
 def advent_calendar_func(df):
     df=df.loc[:,~(df.columns.str.contains('Unnamed:'))]
     df=df[~(df.Module=='Totale')]
+    df=df[['User ID','User Name','User Surname','Module','Campaign','Points']]
+    df.drop_duplicates(inplace=True)
     pivot=df.pivot_table(index=['Campaign','User ID','User Name','User Surname'],columns='Module',values='Points',aggfunc='sum',margins=True,margins_name='Total').sort_values('Total',ascending=False).fillna(0)
     #pivot['User ID']=pivot['User ID'].astype(str)
     return pivot,df
@@ -18,7 +20,7 @@ def to_excel(pivot,df):
     output = BytesIO()
     #workbook = xlsxwriter.Workbook(output, {'in_memory': True})
     with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
-        df.to_excel(writer,sheet_name='Details')
+        df.to_excel(writer,sheet_name='Details',index=False)
         pivot.to_excel(writer,sheet_name='Summary')
         #writer.save()
     return output
@@ -31,6 +33,7 @@ with tab1:
         if uploaded_file is not None:
             df=pd.read_excel(uploaded_file, sheet_name='Matrix')
             tab1.write(df)
+
             csv = convert_df(df)
             tab1.download_button(
             label="Download data as CSV",
@@ -54,11 +57,14 @@ with tab2:
         if uploaded_advent_file is not None:
             df=pd.read_excel(uploaded_advent_file, sheet_name='Campaigns',skiprows=3,skipfooter=5)
             pivot,df=advent_calendar_func(df)
+            tab2.write('Details')
             tab2.write(df)
+
+            tab2.write('Summary')
             tab2.write(pivot.reset_index())
             out=to_excel(pivot,df)
             tab2.download_button(
-                label="Download data as CSV",
+                label="Download data as xlsx",
                 data=out,
                 file_name='large_df.xlsx',
                 mime='application/vnd.ms-excel',key='advent_calendar_download'
