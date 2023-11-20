@@ -24,7 +24,7 @@ def to_excel(pivot,df):
 
 tab1, tab2, tab3 = st.tabs(["SOl", "[2023] Advent calendar", "[STARS]Insurance"])
 with tab1:
-    uploaded_file=st.file_uploader('Choose a file',key='sol')
+    uploaded_file=tab1.file_uploader('Choose a file',key='sol')
     try:
         if uploaded_file is not None:
             df=pd.read_excel(uploaded_file, sheet_name='Matrix')
@@ -46,7 +46,7 @@ with tab1:
     )
 
 with tab2:
-    uploaded_advent_file=st.file_uploader('Choose a file',key='advent_calendar')
+    uploaded_advent_file=tab2.file_uploader('Choose a file',key='advent_calendar')
     try:
         if uploaded_file is not None:
             df=pd.read_excel(uploaded_advent_file, sheet_name='Campaigns',skiprows=3,skipfooter=5)
