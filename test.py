@@ -39,9 +39,10 @@ with tab1:
         data=csv,
         file_name='large_df.csv',
         mime='text/csv',
+        key='sol'
     )
 
-with st:
+with tab2:
     uploaded_advent_file=st.file_uploader('Choose a file',key='advent_calendar')
     try:
         df=pd.read_excel(uploaded_advent_file, sheet_name='Campaigns',skiprows=3,skipfooter=5)
@@ -57,5 +58,5 @@ with st:
         label="Download data as CSV",
         data=out.get_value(),
         file_name='large_df.xlsx',
-        mime='application/vnd.ms-excel',
+        mime='application/vnd.ms-excel',key='advent_calendar'
     )
