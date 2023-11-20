@@ -30,6 +30,13 @@ with tab1:
             df=pd.read_excel(uploaded_file, sheet_name='Matrix')
             tab1.write(df)
             csv = convert_df(df)
+            st.download_button(
+            label="Download data as CSV",
+            data=csv,
+            file_name='large_df.csv',
+            mime='text/csv',
+            key='sol'
+        )
     except Exception as e:
         tab1.write(e)
 
@@ -37,13 +44,7 @@ with tab1:
     
 
 
-    st.download_button(
-        label="Download data as CSV",
-        data=csv,
-        file_name='large_df.csv',
-        mime='text/csv',
-        key='sol'
-    )
+
 
 with tab2:
     uploaded_advent_file=tab2.file_uploader('Choose a file',key='advent_calendar')
@@ -55,15 +56,16 @@ with tab2:
             tab2.write(df)
             tab2.write(pivot),
             out=to_excel(pivot,df)
+            st.download_button(
+            label="Download data as CSV",
+            data=out.get_value(),
+            file_name='large_df.xlsx',
+            mime='application/vnd.ms-excel',key='advent_calendar'
+        )
         
     except Exception as e:
         tab2.write(e)
 
 
 
-    st.download_button(
-        label="Download data as CSV",
-        data=out.get_value(),
-        file_name='large_df.xlsx',
-        mime='application/vnd.ms-excel',key='advent_calendar'
-    )
+
