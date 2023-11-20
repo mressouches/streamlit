@@ -26,13 +26,16 @@ tab1, tab2, tab3 = st.tabs(["SOl", "[2023] Advent calendar", "[STARS]Insurance"]
 with tab1:
     uploaded_file=st.file_uploader('Choose a file',key='sol')
     try:
-        df=pd.read_excel(uploaded_file, sheet_name='Matrix')
+        if uploaded_file is not None:
+            df=pd.read_excel(uploaded_file, sheet_name='Matrix')
+            tab1.write(df)
+            csv = convert_df(df)
     except Exception as e:
         tab1.write(e)
 
-    df.columns=df.columns.str.strip()
-    tab1.write(df)
-    csv = convert_df(df)
+    
+    
+
 
     st.download_button(
         label="Download data as CSV",
@@ -45,13 +48,17 @@ with tab1:
 with tab2:
     uploaded_advent_file=st.file_uploader('Choose a file',key='advent_calendar')
     try:
-        df=pd.read_excel(uploaded_advent_file, sheet_name='Campaigns',skiprows=3,skipfooter=5)
+        if uploaded_file is not None:
+            df=pd.read_excel(uploaded_advent_file, sheet_name='Campaigns',skiprows=3,skipfooter=5)
+            tab1.write(df)
+            pivot,df=advent_calendar_func(df)
+            tab2.write(df)
+            tab2.write(pivot),
+            out=to_excel(pivot,df)
+        
     except Exception as e:
         tab2.write(e)
-    pivot,df=advent_calendar_func(df)
-    tab2.write(df)
-    tab2.write(pivot),
-    out=to_excel(pivot,df)
+
 
 
     st.download_button(
