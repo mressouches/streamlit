@@ -55,7 +55,7 @@ with st:
 
     st.download_button(
         label="Download data as CSV",
-        data=out.get_value()
+        data=out.get_value(),
         file_name='large_df.xlsx',
         mime='application/vnd.ms-excel',
     )
