@@ -30,7 +30,7 @@ with tab1:
             df=pd.read_excel(uploaded_file, sheet_name='Matrix')
             tab1.write(df)
             csv = convert_df(df)
-            st.download_button(
+            tab1.download_button(
             label="Download data as CSV",
             data=csv,
             file_name='large_df.csv',
@@ -56,7 +56,7 @@ with tab2:
             tab2.write(df)
             tab2.write(pivot),
             out=to_excel(pivot,df)
-            st.download_button(
+            tab2.download_button(
             label="Download data as CSV",
             data=out.get_value(),
             file_name='large_df.xlsx',
