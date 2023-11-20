@@ -49,9 +49,8 @@ with tab1:
 with tab2:
     uploaded_advent_file=tab2.file_uploader('Choose a file',key='advent_calendar')
     try:
-        if uploaded_file is not None:
+        if uploaded_advent_file is not None:
             df=pd.read_excel(uploaded_advent_file, sheet_name='Campaigns',skiprows=3,skipfooter=5)
-            tab1.write(df)
             pivot,df=advent_calendar_func(df)
             tab2.write(df)
             tab2.write(pivot),
