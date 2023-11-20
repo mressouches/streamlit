@@ -37,7 +37,7 @@ with tab1:
             data=csv,
             file_name='large_df.csv',
             mime='text/csv',
-            key='sol'
+            key='sol_download'
         )
     except Exception as e:
         tab1.write(e)
@@ -61,7 +61,7 @@ with tab2:
                 label="Download data as CSV",
                 data=out,
                 file_name='large_df.xlsx',
-                mime='application/vnd.ms-excel',key='advent_calendar'
+                mime='application/vnd.ms-excel',key='advent_calendar_download'
         )
         
     except Exception as e:
