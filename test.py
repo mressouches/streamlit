@@ -117,10 +117,12 @@ with tab2:
 
 with tab3:
     uploaded_stock_file=tab3.file_uploader('Choose a file',key='stock')
-    try:
-        if uploaded_stock_file is not None:
-            pwd=tab3.text_input(
+    pwd=tab3.text_input(
                 "Password for file", type="password", key="password_stock")
+    try:
+        
+        if uploaded_stock_file is not None:
+            
             df=liste_stock_df_convert(uploaded_stock_file,pwd)
             
             tab3.write('Details')
