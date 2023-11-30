@@ -41,10 +41,10 @@ def liste_stock_df_convert(uploaded_file,pwd):
     passwd = pwd
 
     decrypted_workbook = BytesIO()
-    """with open(uploaded_file, 'rb') as file:
+    with open(uploaded_file.read()), 'rb') as file:
         office_file = msoffcrypto.OfficeFile(file)
         office_file.load_key(password=passwd)
-        office_file.decrypt(decrypted_workbook)"""
+        office_file.decrypt(decrypted_workbook)
     df=pd.read_excel(uploaded_file ,sheet_name='Liste Stocks',skiprows=1)
     df=df[df['Ptf / Libre']==0]
     df=df[(df['Reg']=="BDX")|(df['Reg']=="LYN")|(df['Reg']=="MTZ")|(df['Reg']=="PRS")|(df['Reg']=="RNS")]
