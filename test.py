@@ -2,10 +2,9 @@ import streamlit as st
 import pandas as pd
 import xlsxwriter
 from io import BytesIO
-
+import msoffcrypto
 import hmac
 import streamlit as st
-
 
 def check_password():
     """Returns `True` if the user had the correct password."""
@@ -36,6 +35,22 @@ if not check_password():
 
 # Main Streamlit app starts here
 st.write("Tools")
+
+
+def liste_stock_df_convert(uploaded_file,pwd):
+    passwd = pwd
+
+    decrypted_workbook = io.BytesIO()
+    with open(uploaded_file, 'rb') as file:
+        office_file = msoffcrypto.OfficeFile(file)
+        office_file.load_key(password=passwd)
+        office_file.decrypt(decrypted_workbook)
+    df=pd.read_excel(decrypted_workbook ,sheet_name='Liste Stocks',skiprows=1)
+    df=df[df['Ptf / Libre']==0]
+    df=df[(df['Reg']=="BDX")|(df['Reg']=="LYN")|(df['Reg']=="MTZ")|(df['Reg']=="PRS")|(df['Reg']=="RNS")]
+
+    return df
+
 def convert_df(df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
     return df.to_csv(index=False,encoding='utf-8').encode('utf-8')
@@ -58,7 +73,7 @@ def to_excel(pivot,df):
     return output
 
 
-tab1, tab2, tab3 = st.tabs(["SOl", "[2023] Advent calendar", "[STARS]Insurance"])
+tab1, tab2, tab3 = st.tabs(["SOl", "[2023] Advent calendar", "Opel Stock"])
 with tab1:
     uploaded_file=tab1.file_uploader('Choose a file',key='sol')
     try:
@@ -76,12 +91,6 @@ with tab1:
         )
     except Exception as e:
         tab1.write(e)
-
-    
-    
-
-
-
 
 with tab2:
     uploaded_advent_file=tab2.file_uploader('Choose a file',key='advent_calendar')
@@ -104,6 +113,27 @@ with tab2:
         
     except Exception as e:
         tab2.write(e)
+
+
+with tab3:
+    uploaded_stock_file=tab3.file_uploader('Choose a file',key='stock')
+    try:
+        if uploaded_stock_file is not None:
+            pwd=tab3.text_input(
+                "Password for file", type="password", key="password_stock")
+            df=liste_stock_df_convert(uploaded_stock_file,pwd)
+            
+            tab3.write('Details')
+            tab3.write(df)
+            tab3.download_button(
+                label="Download data as xlsx",
+                data=df,
+                file_name='Stock_Opel_df.xlsx',
+                mime='application/vnd.ms-excel',key='stock_download'
+        )
+        
+    except Exception as e:
+        tab3.write(e)
 
 
 
