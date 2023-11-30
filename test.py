@@ -40,7 +40,7 @@ st.write("Tools")
 def liste_stock_df_convert(uploaded_file,pwd):
     passwd = pwd
 
-    decrypted_workbook = io.BytesIO()
+    decrypted_workbook = BytesIO()
     with open(uploaded_file, 'rb') as file:
         office_file = msoffcrypto.OfficeFile(file)
         office_file.load_key(password=passwd)
