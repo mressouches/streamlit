@@ -58,6 +58,10 @@ def liste_stock_df_convert(uploaded_file,pwd):
 
 def convert_df(df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
+    df.Model=df.Model.str.replace('ë','e')
+    df.columns=df.columns.str.strip()
+    df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+    df.Unpublished.fillna(0,inplace=True)
     return df.to_csv(index=False,encoding='utf-8').encode('utf-8')
 
 def advent_calendar_func(df):
