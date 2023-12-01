@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import xlsxwriter
+from openpyxl import load_workbook
 from io import BytesIO
 import msoffcrypto
 import hmac
@@ -39,13 +40,17 @@ st.write("Tools")
 
 def liste_stock_df_convert(uploaded_file,pwd):
     passwd = pwd
+    workbook = load_workbook(filename=uploaded_file, read_only=True, password=passwd)
+    ws=workbook['Liste Stocks']
+    """decrypted_workbook = BytesIO()
 
-    decrypted_workbook = BytesIO()
     with open(uploaded_file.read(), 'rb') as file:
         office_file = msoffcrypto.OfficeFile(file)
         office_file.load_key(password=passwd)
-        office_file.decrypt(decrypted_workbook)
-    df=pd.read_excel(uploaded_file ,sheet_name='Liste Stocks',skiprows=1)
+        office_file.decrypt(decrypted_workbook)"""
+    
+    #df=pd.read_excel(uploaded_file ,sheet_name='Liste Stocks',skiprows=1)
+    df=pd.DataFrame(ws.values)
     df=df[df['Ptf / Libre']==0]
     df=df[(df['Reg']=="BDX")|(df['Reg']=="LYN")|(df['Reg']=="MTZ")|(df['Reg']=="PRS")|(df['Reg']=="RNS")]
 
