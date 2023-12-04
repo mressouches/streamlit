@@ -59,6 +59,7 @@ def liste_stock_df_convert(uploaded_file,pwd):
 def convert_df(df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
     df.Model=df.Model.str.replace('ë','e')
+    df.Model=df.Model.astype(str)
     df.columns=df.columns.str.strip()
     df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
     df.Unpublished.fillna(0,inplace=True)
