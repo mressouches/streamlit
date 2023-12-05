@@ -64,7 +64,7 @@ def convert_df(df):
     df.columns=df.columns.str.strip()
     df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
     df.Unpublished.fillna(0,inplace=True)
-    return df.to_csv(index=False)
+    return df.to_csv(index=False,encoding='cp1252')
 
 def advent_calendar_func(df):
     df=df.loc[:,~(df.columns.str.contains('Unnamed:'))]
