@@ -65,7 +65,7 @@ def convert_df(df):
     df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
     df.Unpublished.fillna(0,inplace=True)
     df.Unpublished=df.Unpublished.astype(int)
-    return df.to_csv(index=False,encoding='cp1252').encode('cp1252')
+    return df.to_csv(index=False,encoding='cp1252').encode('cp1252'),df
 
 def advent_calendar_func(df):
     df=df.loc[:,~(df.columns.str.contains('Unnamed:'))]
@@ -93,8 +93,8 @@ with tab1:
             df=pd.read_excel(uploaded_file, sheet_name='Matrix')
             tab1.write(df)
 
-            csv = convert_df(df)
-            tab1.write(csv)
+            csv,df_transformed = convert_df(df)
+            tab1.write(df_transformed)
             tab1.download_button(
             label="Download data as CSV",
             data=csv,
