@@ -94,6 +94,7 @@ with tab1:
             tab1.write(df)
 
             csv = convert_df(df)
+            tab1.write(csv)
             tab1.download_button(
             label="Download data as CSV",
             data=csv,
