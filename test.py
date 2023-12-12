@@ -62,7 +62,7 @@ def convert_df(df):
     df.Model=df.Model.str.replace('ë','e')
     
     df.columns=df.columns.str.strip()
-    df.applymap(lambda x: x.strip() if isinstance(x, object) else x)
+    df.apply(lambda x: x.str.strip() if x.dtype=="object" else x)
     df.Unpublished.fillna(0,inplace=True)
     df.Unpublished=df.Unpublished.astype(int)
     return df.to_csv(index=False,encoding='cp1252').encode('cp1252'),df
