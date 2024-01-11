@@ -85,7 +85,7 @@ def to_excel(pivot,df):
     return output
 
 
-tab1, tab2, tab3 = st.tabs(["SOl", "[2023] Advent calendar", "Opel Stock","SOL_webuser"])
+tab1, tab2, tab3 = st.tabs(["SOl", "[2023] Advent calendar", "Opel Stock"])
 with tab1:
     uploaded_file=tab1.file_uploader('Choose a file',key='sol')
     try:
