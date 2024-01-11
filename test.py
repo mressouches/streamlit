@@ -60,7 +60,7 @@ def convert_df(df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
     df.Model=df.Model.astype(str)
     df.Model=df.Model.str.replace('ë','e')
-    
+    df.disclaimer=df.disclaimer.str.replace('</br>','')
     df.columns=df.columns.str.strip()
     df=df.apply(lambda x: x.str.strip() if x.dtype=="object" else x)
     df.Unpublished.fillna(0,inplace=True)
@@ -85,7 +85,7 @@ def to_excel(pivot,df):
     return output
 
 
-tab1, tab2, tab3 = st.tabs(["SOl", "[2023] Advent calendar", "Opel Stock"])
+tab1, tab2, tab3 = st.tabs(["SOl", "[2023] Advent calendar", "Opel Stock","SOL_webuser"])
 with tab1:
     uploaded_file=tab1.file_uploader('Choose a file',key='sol')
     try:
@@ -149,7 +149,4 @@ with tab3:
         
     except Exception as e:
         tab3.write(e)
-
-
-
 
