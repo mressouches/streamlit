@@ -60,7 +60,7 @@ def convert_df(df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
     df.Model=df.Model.astype(str)
     df.Model=df.Model.str.replace('ë','e')
-    df.disclaimer=df.disclaimer.str.replace("<br/>",'')
+    df.disclaimer=df.disclaimer.str.replace("<br/>",'.')
     df.columns=df.columns.str.strip()
     df=df.apply(lambda x: x.str.strip() if x.dtype=="object" else x)
     df.Unpublished.fillna(0,inplace=True)
