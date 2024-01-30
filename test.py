@@ -98,7 +98,7 @@ def to_excel(pivot,df):
     return output
 
 
-tab1, tab2, tab3 = st.tabs(["SOl", "[2023] Advent calendar", "[BSIDE_POINTP]Quiz_formation"])
+tab1, tab2, tab3 = st.tabs(["SOL", "[2023] Advent calendar", "[BSIDE][POINTP]Quiz_formation"])
 with tab1:
     uploaded_file=tab1.file_uploader('Choose a file',key='sol')
     try:
@@ -142,17 +142,18 @@ with tab2:
 
 
 with tab3:
-    uploaded_final_quiz_file=tab3.file_uploader('Choose a file',key='final_quiz_values')
+    uploaded_final_quiz=tab3.file_uploader('Choose a file',key='final_quiz_values')
     sheetname=tab3.text_input('Sheet name (leave empty if default)', 'baseline')
     uploaded_mapping_file=tab3.file_uploader('Choose a file',key='mapping_details')
     try:    
-        if ((uploaded_stock_file is not None)&(uploaded_mapping_file is not None)):         
-            df_quiz=pd.read_excel(uploaded_advent_file,sheet_name=sheetname,usecols=['Collab 60-80','Extract','Valeur','clean','Module associé','Status'])
+        if ((uploaded_final_quiz is not None)&(uploaded_mapping_file is not None)):         
+            df_quiz=pd.read_excel(uploaded_final_quiz,sheet_name=sheetname,usecols=['Collab 60-80','Extract','Valeur','clean','Module associé','Status'])
             df_details=pd.read_excel(uploaded_mapping_file)
+            pivot=quizz_formation_pivot(df_details=df_details,df_quiz=df_quiz)
             tab3.download_button(
                 label="Download data as xlsx",
                 data=df,
-                file_name='Stock_Opel_df.xlsx',
+                file_name='final_.xlsx',
                 mime='application/vnd.ms-excel',key='quiz_formation_download'
         )
         
