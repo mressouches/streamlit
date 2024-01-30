@@ -38,23 +38,7 @@ if not check_password():
 st.write("Tools")
 
 
-def liste_stock_df_convert(uploaded_file,pwd):
-    passwd = pwd
-    workbook = load_workbook(filename=uploaded_file, read_only=True, password=passwd)
-    ws=workbook['Liste Stocks']
-    """decrypted_workbook = BytesIO()
 
-    with open(uploaded_file.read(), 'rb') as file:
-        office_file = msoffcrypto.OfficeFile(file)
-        office_file.load_key(password=passwd)
-        office_file.decrypt(decrypted_workbook)"""
-    
-    #df=pd.read_excel(uploaded_file ,sheet_name='Liste Stocks',skiprows=1)
-    df=pd.DataFrame(ws.values)
-    df=df[df['Ptf / Libre']==0]
-    df=df[(df['Reg']=="BDX")|(df['Reg']=="LYN")|(df['Reg']=="MTZ")|(df['Reg']=="PRS")|(df['Reg']=="RNS")]
-
-    return df
 
 def convert_df(df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
@@ -77,6 +61,33 @@ def advent_calendar_func(df):
     pivot=df.pivot_table(index=['Campaign','User ID','User Name','User Surname'],columns='Module',values='Points',aggfunc='sum',margins=True,margins_name='Total').sort_values('Total',ascending=False).fillna(0)
     #pivot['User ID']=pivot['User ID'].astype(str)
     return pivot,df
+
+def quizz_formation_pivot(df_quiz,df_details):
+    df_merge=df_quiz.merge(df_details,left_on='Collab 60-80',right_on='SGID').drop('SGID',axis=1)
+    df_merge=df_merge[df_merge.Valeur==0]
+    df_merge.rename(columns={'Extract':'Role',
+    'Collab 60-80':'SGID'}
+    ,inplace=True)
+    df_merge[['Bloc','Module']]=df_merge['Module associé'].str.split("|",expand=True)
+    df_merge.Bloc.replace('Encaiser','Encaisser',inplace=True)
+    df_merge.Module.replace('\xa0Zoner\xa0','Zoner',inplace=True)
+    df_merge.Module.replace('4.Encaisserunrèglementhorsd\'unfluxdevente','4.Encaisserunrèglementhorsfluxdevente',inplace=True)
+    df_merge=df_merge[(~(df_merge.Bloc==''))&(~(df_merge.Module==''))]
+
+    # a filtrer : piloter agence, stocker, receptionner
+    df_merge=df_merge[(df_merge.Bloc!='FAQ')
+    &(df_merge.Bloc!='Bonnes pratiques')
+    &(df_merge.Bloc!='Bonnes pratiques ')
+    &(df_merge.Bloc!='FLUX')
+    &(df_merge.Bloc!='Piloter mon agence')
+    &(df_merge.Bloc!='Receptionner')
+    &(df_merge.Bloc!='Stocker')
+    ]
+    df_merge.drop(columns=['Module associé','clean'],inplace=True)
+    df_merge.drop_duplicates(inplace=True)
+    df_merge.sort_values(by=['Bloc','Module'],inplace=True)
+    pivot=df_merge.pivot(index=['SGID','Role','Région','Site','Agence','Libellé agence','Email'],columns=['Bloc','Module'],values='Status')
+    return pivot
 def to_excel(pivot,df):
     output = BytesIO()
     #workbook = xlsxwriter.Workbook(output, {'in_memory': True})
@@ -87,7 +98,7 @@ def to_excel(pivot,df):
     return output
 
 
-tab1, tab2, tab3 = st.tabs(["SOl", "[2023] Advent calendar", "Opel Stock"])
+tab1, tab2, tab3 = st.tabs(["SOl", "[2023] Advent calendar", "[BSIDE_POINTP]Quiz_formation"])
 with tab1:
     uploaded_file=tab1.file_uploader('Choose a file',key='sol')
     try:
@@ -131,22 +142,18 @@ with tab2:
 
 
 with tab3:
-    uploaded_stock_file=tab3.file_uploader('Choose a file',key='stock')
-    pwd=tab3.text_input(
-                "Password for file", type="password", key="password_stock")
-    try:
-        
-        if uploaded_stock_file is not None:
-            
-            df=liste_stock_df_convert(uploaded_stock_file,pwd)
-            
-            tab3.write('Details')
-            tab3.write(df)
+    uploaded_final_quiz_file=tab3.file_uploader('Choose a file',key='final_quiz_values',usecols=['Collab 60-80','Extract','Valeur','clean','Module associé','Status'])
+    sheetname=tab3.text_input('Sheet name (leave empty if default)', 'baseline')
+    uploaded_mapping_file=tab3.file_uploader('Choose a file',key='mapping_details')
+    try:    
+        if ((uploaded_stock_file is not None)&(uploaded_mapping_file is not None)):         
+            df_quiz=pd.read_excel(uploaded_advent_file,sheet_name=sheename)
+            df_details=pd.read_excel(uploaded_mapping_file)
             tab3.download_button(
                 label="Download data as xlsx",
                 data=df,
                 file_name='Stock_Opel_df.xlsx',
-                mime='application/vnd.ms-excel',key='stock_download'
+                mime='application/vnd.ms-excel',key='quiz_formation_download'
         )
         
     except Exception as e:
