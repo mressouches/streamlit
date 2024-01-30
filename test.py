@@ -88,12 +88,14 @@ def quizz_formation_pivot(df_quiz,df_details):
     df_merge.sort_values(by=['Bloc','Module'],inplace=True)
     pivot=df_merge.pivot(index=['SGID','Role','Région','Site','Agence','Libellé agence','Email'],columns=['Bloc','Module'],values='Status')
     return pivot.to_excel(index=False,excel_writer='openpyxl')
-def to_excel(pivot,df):
+def to_excel(pivot,df=None):
     output = BytesIO()
     #workbook = xlsxwriter.Workbook(output, {'in_memory': True})
     with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
-        df.to_excel(writer,sheet_name='Details',index=False)
-        pivot.to_excel(writer,sheet_name='Summary')
+        if df is not None:
+            df.to_excel(writer,sheet_name='Details',index=False)
+        if pivot is not None:
+            pivot.to_excel(writer,sheet_name='Summary')
         #writer.save()
     return output
 
@@ -150,9 +152,10 @@ with tab3:
             df_quiz=pd.read_excel(uploaded_final_quiz,sheet_name=sheetname,usecols=['Collab 60-80','Extract','Valeur','clean','Module associé','Status'])
             df_details=pd.read_excel(uploaded_mapping_file)
             pivot=quizz_formation_pivot(df_details=df_details,df_quiz=df_quiz)
+            out=to_excel(pivot)
             tab3.download_button(
                 label="Download data as xlsx",
-                data=pivot,
+                data=out,
                 file_name='final_pivot.xlsx',
                 mime='application/vnd.ms-excel',key='quiz_formation_download'
         )
