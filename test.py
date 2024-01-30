@@ -152,7 +152,7 @@ with tab3:
             pivot=quizz_formation_pivot(df_details=df_details,df_quiz=df_quiz)
             tab3.download_button(
                 label="Download data as xlsx",
-                data=df,
+                data=pivot,
                 file_name='final_.xlsx',
                 mime='application/vnd.ms-excel',key='quiz_formation_download'
         )
