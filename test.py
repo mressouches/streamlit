@@ -87,7 +87,7 @@ def quizz_formation_pivot(df_quiz,df_details):
     df_merge.drop_duplicates(inplace=True)
     df_merge.sort_values(by=['Bloc','Module'],inplace=True)
     pivot=df_merge.pivot(index=['SGID','Role','Région','Site','Agence','Libellé agence','Email'],columns=['Bloc','Module'],values='Status')
-    return pivot.to_excel(index=False)
+    return pivot.to_excel(index=False,excel_writer='openpyxl')
 def to_excel(pivot,df):
     output = BytesIO()
     #workbook = xlsxwriter.Workbook(output, {'in_memory': True})
