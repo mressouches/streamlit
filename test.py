@@ -87,7 +87,7 @@ def quizz_formation_pivot(df_quiz,df_details):
     df_merge.drop_duplicates(inplace=True)
     df_merge.sort_values(by=['Bloc','Module'],inplace=True)
     pivot=df_merge.pivot(index=['SGID','Role','Région','Site','Agence','Libellé agence','Email'],columns=['Bloc','Module'],values='Status')
-    return pivot
+    return pivot.to_excel(index=False)
 def to_excel(pivot,df):
     output = BytesIO()
     #workbook = xlsxwriter.Workbook(output, {'in_memory': True})
@@ -153,7 +153,7 @@ with tab3:
             tab3.download_button(
                 label="Download data as xlsx",
                 data=pivot,
-                file_name='final_.xlsx',
+                file_name='final_pivot.xlsx',
                 mime='application/vnd.ms-excel',key='quiz_formation_download'
         )
         
