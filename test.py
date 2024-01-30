@@ -142,12 +142,12 @@ with tab2:
 
 
 with tab3:
-    uploaded_final_quiz_file=tab3.file_uploader('Choose a file',key='final_quiz_values',usecols=['Collab 60-80','Extract','Valeur','clean','Module associé','Status'])
+    uploaded_final_quiz_file=tab3.file_uploader('Choose a file',key='final_quiz_values')
     sheetname=tab3.text_input('Sheet name (leave empty if default)', 'baseline')
     uploaded_mapping_file=tab3.file_uploader('Choose a file',key='mapping_details')
     try:    
         if ((uploaded_stock_file is not None)&(uploaded_mapping_file is not None)):         
-            df_quiz=pd.read_excel(uploaded_advent_file,sheet_name=sheename)
+            df_quiz=pd.read_excel(uploaded_advent_file,sheet_name=sheetname,usecols=['Collab 60-80','Extract','Valeur','clean','Module associé','Status'])
             df_details=pd.read_excel(uploaded_mapping_file)
             tab3.download_button(
                 label="Download data as xlsx",
