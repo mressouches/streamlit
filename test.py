@@ -62,12 +62,13 @@ def advent_calendar_func(df):
     #pivot['User ID']=pivot['User ID'].astype(str)
     return pivot,df
 
-def quizz_formation_pivot(df_quiz,df_details):
+def quizz_formation_pivot(df_quiz,df_details,tab):
     df_merge=df_quiz.merge(df_details,left_on='Collab 60-80',right_on='SGID').drop('SGID',axis=1)
     df_merge=df_merge[df_merge.Valeur==0]
     df_merge.rename(columns={'Extract':'Role',
     'Collab 60-80':'SGID'}
     ,inplace=True)
+    tab.write(df_merge)
     df_merge[['Bloc','Module']]=df_merge['Module associé'].str.split("|",expand=True)
     df_merge.Bloc.replace('Encaiser','Encaisser',inplace=True)
     df_merge.Module.replace('\xa0Zoner\xa0','Zoner',inplace=True)
@@ -151,7 +152,7 @@ with tab3:
         if ((uploaded_final_quiz is not None)&(uploaded_mapping_file is not None)):         
             df_quiz=pd.read_excel(uploaded_final_quiz,sheet_name=sheetname,usecols=['Collab 60-80','Extract','Valeur','clean','Module associé','Status'])
             df_details=pd.read_excel(uploaded_mapping_file)
-            pivot=quizz_formation_pivot(df_details=df_details,df_quiz=df_quiz)
+            pivot=quizz_formation_pivot(df_details=df_details,df_quiz=df_quiz,tab=tab3)
             out=to_excel(pivot)
             tab3.download_button(
                 label="Download data as xlsx",
