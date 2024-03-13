@@ -63,7 +63,7 @@ def advent_calendar_func(df):
     return pivot,df
 
 def quizz_formation_pivot(df_quiz,df_details,tab):
-    df_merge=df_quiz.merge(df_details,left_on='Collab 60-80',right_on='SGID').drop('SGID',axis=1)
+    df_merge=df_quiz.merge(df_details,left_on='Collab 60-80',right_on='SGID',how='left').drop('SGID',axis=1)
     df_merge=df_merge[df_merge.Valeur==0]
     df_merge.rename(columns={'Extract':'Role',
     'Collab 60-80':'SGID'}
