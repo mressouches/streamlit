@@ -57,7 +57,7 @@ def convert_df(df):
     df['Groupe 1 & 2 - Employee']=(df['Groupe 1 & 2 - Employee'].astype(int)*100).astype(str)+"%"
     df['Groupe 3 - Employee']=(df['Groupe 3 - Employee'].astype(int)*100).astype(str)+"%"""
     df.columns=df.columns.str.strip()
-    df=df.apply(lambda x: x.str.strip() if x.dtype=="object" else x)
+    #df=df.apply(lambda x: x.str.strip() if x.dtype=="object" else x)
     df.Unpublished.fillna(0,inplace=True)
     df.Unpublished=df.Unpublished.astype(int)
     return df.to_csv(index=False,encoding='cp1252',sep=';').encode('cp1252'),df
