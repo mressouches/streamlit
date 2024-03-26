@@ -38,7 +38,8 @@ if not check_password():
 st.write("Tools")
 
 
-
+def convert_to_percent_string(value):
+    return '{}%'.format(value * 100)
 
 def convert_df(df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
@@ -116,7 +117,7 @@ with tab1:
     uploaded_file=tab1.file_uploader('Choose a file',key='sol')
     try:
         if uploaded_file is not None:
-            df=pd.read_excel(uploaded_file, sheet_name='Matrix',dtype={'Default':'object','Groupe 1 & 2 - Employee':'object','Groupe 3 - Employee':'object'})
+            df=pd.read_excel(uploaded_file, sheet_name='Matrix',converters={'Default':convert_to_percent_string,'Groupe 1 & 2 - Employee':convert_to_percent_string,'Groupe 3 - Employee':convert_to_percent_string})
             tab1.write(df)
 
             csv,df_transformed = convert_df(df)
