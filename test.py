@@ -53,9 +53,9 @@ def convert_df(df):
     df['disclaimer stellantis']=df['disclaimer stellantis'].replace('.\*', '<br/>*', regex=True)
     df['disclaimer stellantis']=df['disclaimer stellantis'].replace('\n\*', '<br/>*', regex=True)
 
-    df['Default']=(df['Default']*100).astype(str)+"%"
-    df['Groupe 1 & 2 - Employee']=(df['Groupe 1 & 2 - Employee']*100).astype(str)+"%"
-    df['Groupe 3 - Employee']=(df['Groupe 3 - Employee']*100).astype(str)+"%"
+    """df['Default']=(df['Default'].astype(int)*100).astype(str)+"%"
+    df['Groupe 1 & 2 - Employee']=(df['Groupe 1 & 2 - Employee'].astype(int)*100).astype(str)+"%"
+    df['Groupe 3 - Employee']=(df['Groupe 3 - Employee'].astype(int)*100).astype(str)+"%"""
     df.columns=df.columns.str.strip()
     df=df.apply(lambda x: x.str.strip() if x.dtype=="object" else x)
     df.Unpublished.fillna(0,inplace=True)
@@ -116,7 +116,7 @@ with tab1:
     uploaded_file=tab1.file_uploader('Choose a file',key='sol')
     try:
         if uploaded_file is not None:
-            df=pd.read_excel(uploaded_file, sheet_name='Matrix')
+            df=pd.read_excel(uploaded_file, sheet_name='Matrix',dtype={'Default':'str','Groupe 1 & 2 - Employee':'str','Groupe 3 - Employee':'str'})
             tab1.write(df)
 
             csv,df_transformed = convert_df(df)
