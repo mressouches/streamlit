@@ -44,9 +44,18 @@ def convert_df(df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
     df.Model=df.Model.astype(str)
     df.Model=df.Model.str.replace('ë','e')
+
     df.disclaimer=df.disclaimer.str.replace("<br/>",'.')
     df.disclaimer=df.disclaimer.replace('.\*', '<br/>*', regex=True)
     df.disclaimer=df.disclaimer.replace('\n\*', '<br/>*', regex=True)
+
+    df['disclaimer stellantis']=df['disclaimer stellantis'].str.replace("<br/>",'.')
+    df['disclaimer stellantis']=df['disclaimer stellantis'].replace('.\*', '<br/>*', regex=True)
+    df['disclaimer stellantis']=df['disclaimer stellantis'].replace('\n\*', '<br/>*', regex=True)
+
+    df['Default']=str(df['Default']*100)+"%"
+    df['Groupe 1 & 2 - Employee']=str(df['Groupe 1 & 2 - Employee']*100)+"%"
+    df['Groupe 3 - Employee']=str(df['Groupe 3 - Employee']*100)+"%"
     df.columns=df.columns.str.strip()
     df=df.apply(lambda x: x.str.strip() if x.dtype=="object" else x)
     df.Unpublished.fillna(0,inplace=True)
