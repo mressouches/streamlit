@@ -116,7 +116,7 @@ with tab1:
     uploaded_file=tab1.file_uploader('Choose a file',key='sol')
     try:
         if uploaded_file is not None:
-            df=pd.read_excel(uploaded_file, sheet_name='Matrix',dtype={'Default':'str','Groupe 1 & 2 - Employee':'str','Groupe 3 - Employee':'str'})
+            df=pd.read_excel(uploaded_file, sheet_name='Matrix',dtype={'Default':'object','Groupe 1 & 2 - Employee':'object','Groupe 3 - Employee':'object'})
             tab1.write(df)
 
             csv,df_transformed = convert_df(df)
