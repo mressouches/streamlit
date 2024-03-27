@@ -39,7 +39,7 @@ st.write("Tools")
 
 
 def convert_to_percent_string(value):
-    if value.isdigit():
+    if isdigit(value):
         return '{}%'.format(round(value,0)* 100)
     else:
         return value
