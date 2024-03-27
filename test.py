@@ -41,7 +41,7 @@ st.write("Tools")
 def convert_to_percent_string(value):
     if value.isdigit():
         return '{}%'.format(round(value,0)* 100)
-    else
+    else:
         return value
 
 def convert_df(df):
