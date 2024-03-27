@@ -38,10 +38,14 @@ if not check_password():
 st.write("Tools")
 
 
-def convert_to_percent_string(value):
-    if value is not None:
-        return '{}%'.format(round(value,0)* 100)
-    else:
+def convert_to_percentage(value):
+    try:
+        # tenter de convertir la valeur en float
+        value_float = float(value)
+        return "{:.0%}".format(value_float)  # convertir en pourcentage et formater
+    except (ValueError, TypeError):
+        # si la conversion échoue (par exemple, pour les valeurs vides ou non numériques),
+        # renvoyer la valeur telle quelle
         return value
 
 def convert_df(df):
@@ -120,7 +124,7 @@ with tab1:
     uploaded_file=tab1.file_uploader('Choose a file',key='sol')
     try:
         if uploaded_file is not None:
-            df=pd.read_excel(uploaded_file, sheet_name='Matrix',converters={'Default':convert_to_percent_string,'Groupe 1 & 2 - Employee':convert_to_percent_string,'Groupe 3 - Employee':convert_to_percent_string})
+            df=pd.read_excel(uploaded_file, sheet_name='Matrix',converters={'Default':convert_to_percentage,'Groupe 1 & 2 - Employee':convert_to_percentage,'Groupe 3 - Employee':convert_to_percentage})
             tab1.write(df)
 
             csv,df_transformed = convert_df(df)
