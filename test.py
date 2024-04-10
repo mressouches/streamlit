@@ -68,6 +68,7 @@ def convert_df(df):
     #df=df.apply(lambda x: x.str.strip() if x.dtype=="object" else x)
     df.Unpublished.fillna(0,inplace=True)
     df.Unpublished=df.Unpublished.astype(int)
+    df.Stock.fillna(0,inplace=True)
     return df.to_csv(index=False,encoding='cp1252',sep=';').encode('cp1252'),df
 
 def advent_calendar_func(df):
