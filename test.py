@@ -56,10 +56,13 @@ def convert_df(df):
     df.disclaimer=df.disclaimer.str.replace("<br/>",'.')
     df.disclaimer=df.disclaimer.replace('.\*', '<br/>*', regex=True)
     df.disclaimer=df.disclaimer.replace('\n\*', '<br/>*', regex=True)
+    try:
+        df['disclaimer stellantis']=df['disclaimer stellantis'].str.replace("<br/>",'.')
+        df['disclaimer stellantis']=df['disclaimer stellantis'].replace('.\*', '<br/>*', regex=True)
+        df['disclaimer stellantis']=df['disclaimer stellantis'].replace('\n\*', '<br/>*', regex=True)
+    except Exception as e:
+        pass
 
-    df['disclaimer stellantis']=df['disclaimer stellantis'].str.replace("<br/>",'.')
-    df['disclaimer stellantis']=df['disclaimer stellantis'].replace('.\*', '<br/>*', regex=True)
-    df['disclaimer stellantis']=df['disclaimer stellantis'].replace('\n\*', '<br/>*', regex=True)
 
     """df['Default']=(df['Default'].astype(int)*100).astype(str)+"%"
     df['Groupe 1 & 2 - Employee']=(df['Groupe 1 & 2 - Employee'].astype(int)*100).astype(str)+"%"
