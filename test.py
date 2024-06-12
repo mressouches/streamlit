@@ -129,8 +129,8 @@ with tab1:
     try:
         if uploaded_file is not None:
             df=pd.read_excel(uploaded_file, sheet_name='Matrix',converters={'Default':convert_to_percentage,'Groupe 1 & 2 - Employee':convert_to_percentage,'Groupe 3 - Employee':convert_to_percentage})
-            tab1.write(df)
-
+            tab1.write(df) 
+            #test
             csv,df_transformed = convert_df(df)
             tab1.write(df_transformed)
             tab1.download_button(
