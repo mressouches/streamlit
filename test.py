@@ -56,7 +56,7 @@ def convert_df(df):
     df.disclaimer=df.disclaimer.str.replace("<br/>",'.')
     df.disclaimer=df.disclaimer.replace('.\*', '<br/>*', regex=True)
     df.disclaimer=df.disclaimer.replace('\n\*', '<br/>*', regex=True)
-    df.disclaimer=df.disclaimer.replace('. ', '<br/>*', regex=True)
+    df.disclaimer=df.disclaimer.replace('\. ', '<br/>*', regex=True)
     try:
         df["Highlight"] = df["Highlight"].astype(int)
         df['disclaimer stellantis']=df['disclaimer stellantis'].str.replace("<br/>",'.')
@@ -132,7 +132,7 @@ with tab1:
         if uploaded_file is not None:
             df=pd.read_excel(uploaded_file, sheet_name='Matrix',converters={'Default':convert_to_percentage,'Groupe 1 & 2 - Employee':convert_to_percentage,'Groupe 3 - Employee':convert_to_percentage})
             tab1.write(df) 
-            #test
+            
             csv,df_transformed = convert_df(df)
             tab1.write(df_transformed)
             tab1.download_button(
