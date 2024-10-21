@@ -57,7 +57,6 @@ def convert_df(df):
     df.disclaimer=df.disclaimer.replace('.\*', '<br/>*', regex=True)
     df.disclaimer=df.disclaimer.replace('\n\*', '<br/>*', regex=True)
     df.disclaimer=df.disclaimer.replace('\.', '.<br/>*', regex=True)
-    df.disclaimer=df.disclaimer.replace('.', '.<br/>*', regex=True)
     try:
         #df["Highlight"] = df["Highlight"].astype(int)
         df['disclaimer stellantis']=df['disclaimer stellantis'].str.replace("<br/>",'.')
