@@ -56,9 +56,9 @@ def convert_df(df):
     df.disclaimer=df.disclaimer.str.replace("<br/>",'.')
     df.disclaimer=df.disclaimer.replace('.\*', '<br/>*', regex=True)
     df.disclaimer=df.disclaimer.replace('\n\*', '<br/>*', regex=True)
-    df.disclaimer=df.disclaimer.replace('\. ', '.<br/>*', regex=True)
+    df.disclaimer=df.disclaimer.replace('\.', '.<br/>*', regex=True)
     try:
-        df["Highlight"] = df["Highlight"].astype(int)
+        #df["Highlight"] = df["Highlight"].astype(int)
         df['disclaimer stellantis']=df['disclaimer stellantis'].str.replace("<br/>",'.')
         df['disclaimer stellantis']=df['disclaimer stellantis'].replace('.\*', '<br/>*', regex=True)
         df['disclaimer stellantis']=df['disclaimer stellantis'].replace('\n\*', '<br/>*', regex=True)
@@ -74,6 +74,9 @@ def convert_df(df):
     df.Unpublished.fillna(0,inplace=True)
     df.Unpublished=df.Unpublished.astype(int)
     df.Stock.fillna(0,inplace=True)
+    df.Stock = df.Stock.astype(int)
+    df.Highlight.fillna(0,inplace=True)
+    df.Highlight = df.Highlight.astype(int)
     return df.to_csv(index=False,encoding='cp1252',sep=';').encode('cp1252'),df
 
 def advent_calendar_func(df):
