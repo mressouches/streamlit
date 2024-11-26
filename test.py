@@ -88,34 +88,6 @@ def advent_calendar_func(df):
     #pivot['User ID']=pivot['User ID'].astype(str)
     return pivot,df
 
-def quizz_formation_pivot(df_quiz,df_details,tab):
-    df_merge=df_quiz.merge(df_details,left_on='Collab 60-80',right_on='SGID',how='left').drop('SGID',axis=1)
-    df_merge=df_merge[df_merge.Valeur==0]
-    df_merge.rename(columns={'Extract':'Role',
-    'Collab 60-80':'SGID'}
-    ,inplace=True)
-    tab.write(df_merge)
-    df_merge[['Bloc','Module']]=df_merge['Module associé'].str.split("|",expand=True)
-    df_merge.Bloc.replace('Encaiser','Encaisser',inplace=True)
-    df_merge.Module.replace('\xa0Zoner\xa0','Zoner',inplace=True)
-    df_merge.Module.replace('4.Encaisserunrèglementhorsd\'unfluxdevente','4.Encaisserunrèglementhorsfluxdevente',inplace=True)
-    df_merge=df_merge[(~(df_merge.Bloc==''))&(~(df_merge.Module==''))]
-
-    # a filtrer : piloter agence, stocker, receptionner
-    df_merge=df_merge[(df_merge.Bloc!='FAQ')
-    &(df_merge.Bloc!='Bonnes pratiques')
-    &(df_merge.Bloc!='Bonnes pratiques ')
-    &(df_merge.Bloc!='FLUX')
-    &(df_merge.Bloc!='Piloter mon agence')
-    &(df_merge.Bloc!='Receptionner')
-    &(df_merge.Bloc!='Stocker')
-    ]
-    df_merge.drop(columns=['Module associé','clean'],inplace=True)
-    df_merge.drop_duplicates(inplace=True)
-    df_merge.sort_values(by=['Bloc','Module'],inplace=True)
-    tab3.write(df_merge)
-    pivot=df_merge.pivot(index=['SGID','Role','Région','Site','Agence','Libellé agence','Email'],columns=['Bloc','Module'],values='Status')
-    return pivot
 def to_excel(pivot,df=None):
     output = BytesIO()
     #workbook = xlsxwriter.Workbook(output, {'in_memory': True})
@@ -128,7 +100,7 @@ def to_excel(pivot,df=None):
     return output
 
 
-tab1, tab2, tab3 = st.tabs(["SOL", "[2023] Advent calendar", "[BSIDE][POINTP]Quiz_formation"])
+tab1, tab2 = st.tabs(["SOL", "[2023] Advent calendar"])
 with tab1:
     uploaded_file=tab1.file_uploader('Choose a file',key='sol')
     try:
@@ -169,26 +141,3 @@ with tab2:
         
     except Exception as e:
         tab2.write(e)
-
-
-with tab3:
-    uploaded_final_quiz=tab3.file_uploader('Choose a file',key='final_quiz_values')
-    sheetname=tab3.text_input('Sheet name (leave empty if default)', 'baseline')
-    uploaded_mapping_file=tab3.file_uploader('Choose a file',key='mapping_details')
-    try:    
-        if ((uploaded_final_quiz is not None)&(uploaded_mapping_file is not None)):         
-            #df_quiz=pd.read_excel(uploaded_final_quiz,sheet_name=sheetname,usecols=['Collab 60-80','Extract','Valeur','clean','Module associé','Status'])
-            df_quiz=pd.read_csv(uploaded_final_quiz,sep=';',usecols=['Collab 60-80','Extract','Valeur','clean','Module associé','Status'])
-            df_details=pd.read_excel(uploaded_mapping_file)
-            pivot=quizz_formation_pivot(df_details=df_details,df_quiz=df_quiz,tab=tab3)
-            out=to_excel(pivot)
-            tab3.download_button(
-                label="Download data as xlsx",
-                data=out,
-                file_name='final_pivot.xlsx',
-                mime='application/vnd.ms-excel',key='quiz_formation_download'
-        )
-        
-    except Exception as e:
-        tab3.write(e)
-
