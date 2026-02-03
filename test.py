@@ -1,12 +1,8 @@
 import streamlit as st
 import pandas as pd
-import xlsxwriter
-from openpyxl import load_workbook
 from io import BytesIO
-import msoffcrypto
 import hmac
-import streamlit as st
-
+ 
 # =============================================================================
 # GESTION DU MOT DE PASSE
 # =============================================================================
@@ -150,7 +146,8 @@ with tab1:
             
             if df_brut is not None:
                 tab1.markdown("### Aperçu des données brutes chargées")
-                tab1.dataframe(df_brut)
+                df_brut_print = df_brut.astype("string[python]").astype(object)
+                tab1.dataframe(df_brut_print)
 
                 # Étape 2: Nettoyer les données (types numériques conservés)
                 df_nettoye = nettoyer_et_transformer(df_brut)
@@ -159,7 +156,8 @@ with tab1:
                 df_final_formate = formater_pour_affichage(df_nettoye)
 
                 tab1.markdown("### Aperçu des données finales")
-                tab1.dataframe(df_final_formate)
+                df_final_formate_print = df_final_formate.astype("string[python]").astype(object)
+                tab1.dataframe(df_final_formate_print)
 
                 # Préparation du fichier CSV pour le téléchargement
                 csv_data = convert_df_to_csv(df_final_formate)
